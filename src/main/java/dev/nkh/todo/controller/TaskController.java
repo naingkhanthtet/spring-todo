@@ -1,42 +1,41 @@
 package dev.nkh.todo.controller;
 
-
-import dev.nkh.todo.model.Task;
-import dev.nkh.todo.repository.TaskRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import dev.nkh.todo.service.TaskService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
-@RestController
-@RequestMapping("/tasks")
+@Controller
 public class TaskController {
-    @Autowired
-    private TaskRepository taskRepository;
+    private final TaskService taskService;
 
-    @GetMapping
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
     }
 
-    @PostMapping
-    public Task createTask(@RequestBody Task task) {
-        return taskRepository.save(task);
+    @GetMapping("/")
+    public String listTasks(Model model) {
+        model.addAttribute("tasks", taskService.getAllTasks());
+        return "tasks/list";
     }
 
-    @PutMapping("/{id}")
-    public Task updateTask(@PathVariable Long id, @RequestBody Task updatedTask) {
-        return taskRepository.findById(id).map(task -> {
-            task.setTitle(updatedTask.getTitle());
-            task.setCompleted(updatedTask.isCompleted());
-            return taskRepository.save(task);
-        }).orElseThrow(() -> new RuntimeException("Task not found with id " + id));
+    @PostMapping("/tasks")
+    public String addTask(@RequestParam("title") String title) {
+        taskService.addTask(title);
+        return "redirect:/";
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteTask(@PathVariable Long id) {
-        taskRepository.deleteById(id);
+    @PostMapping("/tasks/toggle")
+    public String toggleTaskCompletion(@RequestParam("id") long id) {
+        taskService.toggleTaskCompletion(id);
+        return "redirect:/";
+    }
+
+    @PostMapping("/tasks/delete")
+    public String deleteTask(@RequestParam("id") long id) {
+        taskService.deleteTask(id);
+        return "redirect:/";
     }
 }
 
