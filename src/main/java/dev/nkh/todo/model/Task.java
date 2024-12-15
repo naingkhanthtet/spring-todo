@@ -1,26 +1,9 @@
 package dev.nkh.todo.model;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "tasks")
 public class Task {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(nullable = false)
     private String title;
-    @Column(nullable = false)
     private boolean completed;
-
-    public Task() {
-
-    }
-
-    public Task(boolean completed, String title) {
-        this.completed = completed;
-        this.title = title;
-    }
 
     public long getId() {
         return id;
