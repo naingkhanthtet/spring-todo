@@ -31,7 +31,10 @@
         <tbody>
         <!-- Iterate over the tasks and display each one -->
         <tr th:each="task : ${tasks}">
-            <td th:text="${task.title}"></td>
+            <td>
+                <span th:if="${task.completed}"><s th:text="${task.title}"></s></span>
+                <span th:if="${!task.completed}"><span th:text="${task.title}"></span></span>
+            </td>
             <td>
                 <span th:if="${task.completed}" class="badge bg-success">Completed</span>
                 <span th:if="${!task.completed}" class="badge bg-warning">In Progress</span>
