@@ -12,7 +12,7 @@
     <h1>To do task Springboot</h1>
 
     <!-- Form to add a new task -->
-    <form action="/tasks" method="POST" class="mt-3 mb-3">
+    <form action="/tasks/jpa" method="POST" class="mt-3 mb-3">
         <div class="input-group">
             <input type="text" name="title" class="form-control" placeholder="New Task" required>
             <button class="btn btn-primary" type="submit">Add Task</button>
@@ -41,7 +41,7 @@
             </td>
             <td>
                 <!-- Button to toggle task completion -->
-                <form action="/tasks/toggle" method="POST" th:action="@{/tasks/toggle}" style="display:inline-block;">
+                <form action="/tasks/jpa/toggle" method="POST" th:action="@{/tasks/jpa/toggle}" style="display:inline-block;">
                     <input type="hidden" name="id" th:value="${task.id}"/>
                     <button type="submit" class="btn btn-warning">
                         <span th:if="${task.completed}">Undo</span>
@@ -50,7 +50,7 @@
                 </form>
 
                 <!-- Button to delete the task -->
-                <form action="/tasks/delete" method="POST" th:action="@{/tasks/delete}" style="display:inline-block;">
+                <form action="/tasks/jpa/delete" method="POST" th:action="@{/tasks/jpa/delete}" style="display:inline-block;">
                     <input type="hidden" name="id" th:value="${task.id}"/>
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
