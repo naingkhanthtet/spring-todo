@@ -2,7 +2,6 @@ package dev.nkh.todo.controller;
 
 import dev.nkh.todo.model.Task;
 import dev.nkh.todo.repository.TaskRepositoryJpa;
-import dev.nkh.todo.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,16 +13,16 @@ import java.util.Optional;
 
 @Controller
 public class TaskControllerJpa {
-    @Autowired
-    private TaskRepositoryJpa taskRepositoryJpa;
+    private final TaskRepositoryJpa taskRepositoryJpa;
 
-    public TaskControllerJpa(TaskService taskService) {
+    @Autowired
+    public TaskControllerJpa(TaskRepositoryJpa taskRepositoryJpa) {
         this.taskRepositoryJpa = taskRepositoryJpa;
     }
 
     @GetMapping("/")
-    public String getTasks() {
-        taskRepositoryJpa.findAll();
+    public String getTasks(Model model) {
+        model.addAttribute("tasks", taskRepositoryJpa.findAll());
         return "tasks/list";
     }
 
